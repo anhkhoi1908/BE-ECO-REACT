@@ -12,7 +12,7 @@ const createProduct = async (req, res) => {
             })
         } 
 
-        console.log('respone', req.body)
+        // console.log('respone', req.body)
         const respone = await productService.createProduct(req.body)
         return res.status(200).json(respone)
 
@@ -23,4 +23,24 @@ const createProduct = async (req, res) => {
     }
 }
 
-module.exports = {createProduct}
+const updateProduct = async (req, res) => {
+    try {
+        const productId = req.params.id
+        const data = req.body
+        if(!productId) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The productId is required'
+            })
+        } 
+        console.log('productId', productId)   
+        const respone = await productService.updateProduct(productId, data)
+        return res.status(200).json(respone)
+    } catch(e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+module.exports = {createProduct, updateProduct}
