@@ -43,4 +43,53 @@ const updateProduct = async (req, res) => {
     }
 }
 
-module.exports = {createProduct, updateProduct}
+const deleteProduct = async (req, res) => {
+    try {   
+        const productId = req.params.id
+        // const token = req.headers    
+        if(!productId) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The productId is required'
+            })
+        } 
+        const respone = await productService.deleteProduct(productId)
+        return res.status(200).json(respone)
+    } catch(e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+const getAllProduct = async (req, res) => {
+    try {   
+        const respone = await productService.getAllProduct()
+        return res.status(200).json(respone)
+    } catch(e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+const getDetailProduct = async (req, res) => {
+    try {   
+        const productId = req.params.id
+        // const token = req.headers
+        if(!productId) {
+            return res.status(200).json({
+                status: 'ERR',
+                message: 'The productId is required'
+            })
+        } 
+        const respone = await productService.getDetailProduct(productId)
+        return res.status(200).json(respone)
+    } catch(e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+module.exports = {createProduct, updateProduct, deleteProduct ,getDetailProduct, getAllProduct}
