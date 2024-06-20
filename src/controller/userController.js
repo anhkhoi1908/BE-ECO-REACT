@@ -56,7 +56,15 @@ const loginUser = async (req, res) => {
         // console.log("isCheckEmail", isCheckEmail)
 
         const respone = await userService.loginUser(req.body)
-        return res.status(200).json(respone )
+        const{refresh_token, ...newRespone} = respone
+        // console.log('respone', respone)
+        res.cookie('refresh_token', refresh_token, {
+            httpOnly: true,
+            secure: false,
+            samsite: 'strict'
+        }) 
+        return res.status(200).json(newRespone)
+        
     } catch(e) {
         return res.status(404).json({
             message: e
@@ -134,16 +142,18 @@ const getDetailUser = async (req, res) => {
 }
 
 const refreshToken = async (req, res) => {
+    console.log('req.cookies.refresh_token', req.cookies.refresh_token)
     try {   
-        const token = req.headers.token.split(' ')[1]
+        const token = req.cookies.refresh_token
         if(!token) {
             return res.status(200).json({
                 status: 'ERR',
-                message: 'The token is required!'
+                message: 'The token is required!'   
             })
         } 
         const respone = await jwtService.refreshTokenJwtService(token)
         return res.status(200).json(respone)
+        
     } catch(e) {
         return res.status(404).json({
             message: e
@@ -151,4 +161,28 @@ const refreshToken = async (req, res) => {
     }
 }
 
-module.exports = {createUser, loginUser, updateUser, deleteUser, getAllUser, getDetailUser, refreshToken}
+const logoutUser = async (req, res) => {
+    // console.log('req.cookies.refresh_token', req.cookies.refresh_token)
+    try {   
+        // const token = req.cookies.refresh_token
+        // if(!token) {
+        //     return res.status(200).json({
+        //         status: 'ERR',
+        //         message: 'The token is required!'   
+        //     })
+        // } 
+        res.clearCookie('refresh_token')
+        // const respone = await jwtService.refreshTokenJwtService(token)
+        return res.status(200).json({
+            status: 'OK',
+            message: 'LOGOUT SUCCESS'
+        })
+        
+    } catch(e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+module.exports = {createUser, loginUser, updateUser, deleteUser, getAllUser, getDetailUser, refreshToken, logoutUser}
