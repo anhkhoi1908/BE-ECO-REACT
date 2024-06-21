@@ -142,7 +142,7 @@ const getDetailUser = async (req, res) => {
 }
 
 const refreshToken = async (req, res) => {
-    console.log('req.cookies.refresh_token', req.cookies.refresh_token)
+    // console.log('req.cookies.refresh_token', req.cookies.refresh_token)  
     try {   
         const token = req.cookies.refresh_token
         if(!token) {
@@ -172,6 +172,7 @@ const logoutUser = async (req, res) => {
         //     })
         // } 
         res.clearCookie('refresh_token')
+        res.localStorage.removeItem(access_token);
         // const respone = await jwtService.refreshTokenJwtService(token)
         return res.status(200).json({
             status: 'OK',
