@@ -164,16 +164,9 @@ const refreshToken = async (req, res) => {
 const logoutUser = async (req, res) => {
     // console.log('req.cookies.refresh_token', req.cookies.refresh_token)
     try {   
-        // const token = req.cookies.refresh_token
-        // if(!token) {
-        //     return res.status(200).json({
-        //         status: 'ERR',
-        //         message: 'The token is required!'   
-        //     })
-        // } 
-        res.clearCookie('refresh_token')
-        res.localStorage.removeItem(access_token);
-        // const respone = await jwtService.refreshTokenJwtService(token)
+        res.clearCookie('refresh_token')    
+        res.localStorage.removeItem('access_token');
+
         return res.status(200).json({
             status: 'OK',
             message: 'LOGOUT SUCCESS'
