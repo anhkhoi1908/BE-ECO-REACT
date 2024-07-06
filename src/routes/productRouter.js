@@ -9,4 +9,4 @@ router.delete('/delete/:id', productController.deleteProduct)
 router.get('/get-details/:id', productController.getDetailProduct)
 router.get('/getAll', productController.getAllProduct)
 
-module.exports = router
+    module.exports = router
